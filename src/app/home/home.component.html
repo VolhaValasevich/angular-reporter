@@ -1,0 +1,19 @@
+<input id="myInput" type="text" placeholder="Search..">
+<table class="table table-striped">
+    <thead>
+      <tr>
+       
+        <th>1</th>
+        <th >2</th>
+      </tr>
+    </thead>
+    <tbody id="myTable">
+
+      <tr *ngFor="let test of tests">
+        <td>{{test?.keyword}}</td>
+        <td>{{test?.name}}</td>
+      
+      </tr>
+      
+    </tbody>
+  </table>
