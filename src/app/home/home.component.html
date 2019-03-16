@@ -1,19 +1,20 @@
-<input id="myInput" type="text" placeholder="Search..">
-<table class="table table-striped">
-    <thead>
-      <tr>
-       
-        <th>1</th>
-        <th >2</th>
-      </tr>
-    </thead>
-    <tbody id="myTable">
-
-      <tr *ngFor="let test of tests">
-        <td>{{test?.keyword}}</td>
-        <td>{{test?.name}}</td>
-      
-      </tr>
-      
-    </tbody>
-  </table>
+<div>
+    {{passed}} {{failed}} {{skipped}}
+</div>
+  <div>
+      <div *ngFor="let feature of tests">
+        <div class={{feature?.status}}>
+          {{feature?.keyword}}: {{feature?.name}}
+        </div>
+        <div *ngFor="let scenario of feature.innerElements">
+          <div class={{scenario?.status}}>
+            {{scenario?.keyword}}: {{scenario?.name}}
+          </div>
+          <div *ngFor="let step of scenario.innerElements">
+            <div class={{step?.status}}>
+                {{step?.keyword}}: {{step?.name}} ({{step?.status}}) - {{step?.duration}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

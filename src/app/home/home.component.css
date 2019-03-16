@@ -1,0 +1,9 @@
+.failed {
+    background-color: #ff9999;
+}
+.passed {
+    background-color: #99ff99;
+}
+.skipped {
+    background-color: #ffff80;
+}
