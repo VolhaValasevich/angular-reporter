@@ -1,34 +1,64 @@
-<div>
-  <button (click)="getElementsWithStatus('passed')">
-      passed: {{passed}}
-  </button>
-  <button (click)="getElementsWithStatus('failed')">
-      failed: {{failed}}
-  </button>
-  <button (click)="getElementsWithStatus('skipped')">
-      skipped: {{skipped}}
-  </button>
-  <button (click)="removeFiltering()">
-      All Tests
-  </button>
-</div>
-<div>
-  {{featureNum}} {{scenarioNum}} {{stepNum}}
+<div class="header">
+  <span class="highlight header-text">Test results: </span>
+  <div class="float-right">
+
+    <div>
+      <span class="passed block clickable" (click)="getElementsWithStatus('passed')">
+        passed: {{passed}}
+      </span>
+      <span class="failed block clickable" (click)="getElementsWithStatus('failed')">
+        failed: {{failed}}
+      </span>
+      <span class="skipped block clickable" (click)="getElementsWithStatus('skipped')">
+        skipped: {{skipped}}
+      </span>
+      <span class="block clickable" style="background-color:white" (click)="removeFiltering()">
+        All Tests
+      </span>
+    </div>
+
+    <div class="block" style="color:white">
+      <div>
+        <span>{{featureNum}} features, {{scenarioNum}} scenarios, {{stepNum}} steps</span>
+      </div>
+      <div>
+        <span>Duration: {{totalDuration}}</span>
+      </div>
+    </div>
+
+  </div>
 </div>
 <div>
   <div *ngFor="let feature of outputData">
-    <div class={{feature?.status}}>
-      {{feature?.keyword}}: {{feature?.name}}
-    </div>
-    <div *ngFor="let scenario of feature.innerElements">
-      <div class={{scenario?.status}}>
-        {{scenario?.keyword}}: {{scenario?.name}}
-      </div>
-      <div *ngFor="let step of scenario.innerElements">
-        <div class={{step?.status}}>
-          {{step?.keyword}}: {{step?.name}} ({{step?.status}}) - {{step?.duration}}
+
+    <div class="feature block dark-grey">
+
+      <h3 class="title clickable" type="button">
+        <span class="highlight">{{feature?.keyword}} 1:</span> {{feature?.name}}
+        <span class="float-right">Duration: {{feature?.duration}}</span>
+      </h3>
+    
+        <div *ngFor="let scenario of feature.innerElements">
+          <div class="element inner-block light-grey">
+
+            <h3 class="title clickable" type="button">
+              <span class="highlight">{{scenario?.keyword}} 1: </span>{{scenario?.name}}
+              <span class="float-right">Duration: {{scenario?.duration}}</span>
+            </h3>
+
+            <div *ngFor="let step of scenario.innerElements">
+
+              <div class="step">
+                <p>
+                  <span class="text {{step?.status}}">
+                    <span class="keyword highlight"> {{step?.keyword}} </span> {{step?.name}}
+                    <span class="float-right">Duration: {{step?.duration}}</span>
+                  </span>
+                </p>
+              </div>
+
+            </div>
+          </div>
         </div>
-      </div>
     </div>
   </div>
-</div>
