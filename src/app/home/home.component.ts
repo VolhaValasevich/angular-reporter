@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from './home.service';
 import { TestElement } from './testElement';
+import { element } from 'protractor';
+import { stat } from 'fs';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,20 +13,24 @@ export class HomeComponent implements OnInit {
 
   constructor(private httpService: HttpService) { }
   tests: TestElement[] = [];
-  passed: number;
-  failed: number;
-  skipped: number;
-  featureNum: number;
-  scenarioNum: number;
-  stepNum: number;
-  totalDuration: number;
+  outputData: TestElement[];
+  passed: number = 0;
+  failed: number = 0;
+  skipped: number = 0;
+  featureNum: number = 0;
+  scenarioNum: number = 0;
+  stepNum: number = 0;
+  totalDuration: number = 0;
   ngOnInit() {
     this.httpService.getJSON().subscribe((value) => {
-      this.parseRawData(value);      
+      this.tests = this.parseRawData(value);      
+      this.processElements(this.tests);
+      this.outputData = this.tests;
     });
   }
 
   parseRawData(value: any) {
+    let tests: TestElement[] = [];
     value.forEach((feature) => {
       let newFeature = new TestElement(feature.keyword, feature.name);
       feature.elements.forEach((element) => {
@@ -37,9 +43,9 @@ export class HomeComponent implements OnInit {
         })
         newFeature.innerElements.push(scenario);
       })
-      this.tests.push(newFeature);
-      this.processElements(this.tests);
+      tests.push(newFeature);
     })
+    return tests;
   }
 
   getElementDuration(element: TestElement) {
@@ -67,10 +73,12 @@ export class HomeComponent implements OnInit {
 
         scenario.duration = this.getElementDuration(scenario);
         scenario.status = this.getElementStatus(scenario);
-        this.stepNum += scenario.innerElements.length;
 
         scenario.innerElements.forEach((step) => {
-          this[step.status]++;
+          if (step.keyword !== 'After') {
+            this[step.status]++;
+            this.stepNum++;
+          }
         })
 
       })
@@ -82,5 +90,17 @@ export class HomeComponent implements OnInit {
       this.featureNum++;
 
     })
+  }
+
+  getElementsWithStatus(status: string) {
+      this.outputData = this.tests.map((feature) => {
+          if (feature.status === status) return feature;
+      }).filter((el) => {
+          return el != null;
+      })
+  }
+
+  removeFiltering() {
+    this.outputData = this.tests;
   }
 }

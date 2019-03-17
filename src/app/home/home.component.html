@@ -1,20 +1,34 @@
 <div>
-    {{passed}} {{failed}} {{skipped}}
+  <button (click)="getElementsWithStatus('passed')">
+      passed: {{passed}}
+  </button>
+  <button (click)="getElementsWithStatus('failed')">
+      failed: {{failed}}
+  </button>
+  <button (click)="getElementsWithStatus('skipped')">
+      skipped: {{skipped}}
+  </button>
+  <button (click)="removeFiltering()">
+      All Tests
+  </button>
 </div>
-  <div>
-      <div *ngFor="let feature of tests">
-        <div class={{feature?.status}}>
-          {{feature?.keyword}}: {{feature?.name}}
-        </div>
-        <div *ngFor="let scenario of feature.innerElements">
-          <div class={{scenario?.status}}>
-            {{scenario?.keyword}}: {{scenario?.name}}
-          </div>
-          <div *ngFor="let step of scenario.innerElements">
-            <div class={{step?.status}}>
-                {{step?.keyword}}: {{step?.name}} ({{step?.status}}) - {{step?.duration}}
-            </div>
-          </div>
+<div>
+  {{featureNum}} {{scenarioNum}} {{stepNum}}
+</div>
+<div>
+  <div *ngFor="let feature of outputData">
+    <div class={{feature?.status}}>
+      {{feature?.keyword}}: {{feature?.name}}
+    </div>
+    <div *ngFor="let scenario of feature.innerElements">
+      <div class={{scenario?.status}}>
+        {{scenario?.keyword}}: {{scenario?.name}}
+      </div>
+      <div *ngFor="let step of scenario.innerElements">
+        <div class={{step?.status}}>
+          {{step?.keyword}}: {{step?.name}} ({{step?.status}}) - {{step?.duration}}
         </div>
       </div>
     </div>
+  </div>
+</div>
