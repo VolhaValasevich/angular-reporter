@@ -60,3 +60,18 @@ h1, h2, h3, h4, p {
     margin: 8px;
     width: 30%;
 }
+.column {
+    float: left;
+}
+  
+.left{
+    width: 20%;
+} 
+.right {
+    width: 40%;
+}
+  
+.middle {
+    width: 40%;
+    margin: auto;
+}

@@ -1,31 +1,39 @@
-<div class="header">
-  <span class="highlight header-text">Test results: </span>
-  <div class="float-right">
+<div class="header row">
 
-    <div>
-      <span class="passed block clickable" (click)="getElementsWithStatus('passed')">
-        passed: {{passed}}
-      </span>
-      <span class="failed block clickable" (click)="getElementsWithStatus('failed')">
-        failed: {{failed}}
-      </span>
-      <span class="skipped block clickable" (click)="getElementsWithStatus('skipped')">
-        skipped: {{skipped}}
-      </span>
-      <span class="block clickable light-grey" (click)="removeFiltering()">
-        All Tests
-      </span>
+  <div class="column left">
+    <span class="highlight header-text">Test results: </span>
+  </div>
+  <div class="column middle">
+      <span class="highlight text" style="color:white">Search in tests</span>
+    <input #search (keyup.enter)="searchInTests(search.value)" type="text" class="form-control" placeholder="Enter keyword"
+      aria-label="Enter keyword" aria-describedby="basic-addon2">
+  </div>
+  <div class="column right">
+    <div class="float-right">
+        <div>
+            <span class="passed block clickable" (click)="getElementsWithStatus('passed')">
+              passed: {{passed}}
+            </span>
+            <span class="failed block clickable" (click)="getElementsWithStatus('failed')">
+              failed: {{failed}}
+            </span>
+            <span class="skipped block clickable" (click)="getElementsWithStatus('skipped')">
+              skipped: {{skipped}}
+            </span>
+            <span class="block clickable light-grey" (click)="removeFiltering()">
+              All Tests
+            </span>
+          </div>
+      
+          <div class="block" style="color:white">
+            <div>
+              <span>{{featureNum}} features, {{scenarioNum}} scenarios, {{stepNum}} steps</span>
+            </div>
+            <div>
+              <span>{{formatDuration(totalDuration)}}</span>
+            </div>
+          </div>
     </div>
-
-    <div class="block" style="color:white">
-      <div>
-        <span>{{featureNum}} features, {{scenarioNum}} scenarios, {{stepNum}} steps</span>
-      </div>
-      <div>
-        <span>{{formatDuration(totalDuration)}}</span>
-      </div>
-    </div>
-
   </div>
 </div>
 <div>
@@ -37,28 +45,28 @@
         <span class="highlight">{{feature?.keyword}} 1:</span> {{feature?.name}}
         <span class="float-right">{{formatDuration(feature?.duration)}}</span>
       </h3>
-    
-        <div *ngFor="let scenario of feature.innerElements">
-          <div class="element inner-block light-grey">
 
-            <h3 class="title" type="button">
-              <span class="highlight">{{scenario?.keyword}} 1: </span>{{scenario?.name}}
-              <span class="float-right">{{formatDuration(scenario?.duration)}}</span>
-            </h3>
+      <div *ngFor="let scenario of feature.innerElements">
+        <div class="element inner-block light-grey">
 
-            <div *ngFor="let step of scenario.innerElements">
+          <h3 class="title" type="button">
+            <span class="highlight">{{scenario?.keyword}} 1: </span>{{scenario?.name}}
+            <span class="float-right">{{formatDuration(scenario?.duration)}}</span>
+          </h3>
 
-              <div class="step">
-                <p>
-                  <span class="text {{step?.status}}">
-                    <span class="keyword highlight"> {{step?.keyword}} </span> {{step?.name}}
-                    <span class="float-right">{{formatDuration(step?.duration)}}</span>
-                  </span>
-                </p>
-              </div>
+          <div *ngFor="let step of scenario.innerElements">
 
+            <div class="step">
+              <p>
+                <span class="text {{step?.status}}">
+                  <span class="keyword highlight"> {{step?.keyword}} </span> {{step?.name}}
+                  <span class="float-right">{{formatDuration(step?.duration)}}</span>
+                </span>
+              </p>
             </div>
+
           </div>
         </div>
+      </div>
     </div>
   </div>

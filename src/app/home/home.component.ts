@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     this.httpService.getJSON().subscribe((value) => {
       this.tests = this.parseRawData(value);
       this.processElements(this.tests);
-      this.outputData = this.tests;
+      this.outputData = JSON.parse(JSON.stringify(this.tests));
     });
   }
 
@@ -110,6 +110,15 @@ export class HomeComponent implements OnInit {
       }
     }).filter((el) => {
       return el != null;
+    })
+  }
+
+  searchInTests(keyword: string) {
+    this.outputData = this.outputData.filter((feature) => {
+      feature.innerElements = feature.innerElements.filter((el) => {
+        return el.name.toLowerCase().indexOf(keyword.toLowerCase()) > -1;
+      })
+      return feature.innerElements.length > 0;
     })
   }
 
