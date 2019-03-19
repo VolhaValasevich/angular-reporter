@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   totalDuration: number = 0;
   ngOnInit() {
     this.httpService.getJSON().subscribe((value) => {
-      this.tests = this.parseRawData(value);      
+      this.tests = this.parseRawData(value);
       this.processElements(this.tests);
       this.outputData = this.tests;
     });
@@ -36,10 +36,12 @@ export class HomeComponent implements OnInit {
       feature.elements.forEach((element) => {
         let scenario = new TestElement(element.keyword, element.name);
         element.steps.forEach((step) => {
-          let newStep = new TestElement(step.keyword, step.name);
-          newStep.duration = step.result.duration;
-          newStep.status = step.result.status;
-          scenario.innerElements.push(newStep);
+          if (step.keyword != 'After') {
+            let newStep = new TestElement(step.keyword, step.name);
+            newStep.duration = step.result.duration;
+            newStep.status = step.result.status;
+            scenario.innerElements.push(newStep);
+          }
         })
         newFeature.innerElements.push(scenario);
       })
@@ -49,13 +51,27 @@ export class HomeComponent implements OnInit {
   }
 
   getElementDuration(element: TestElement) {
-    let duration: number;
+    let duration: number = 0;
     element.innerElements.forEach((innerElement) => {
       if (typeof innerElement.duration === 'number') {
         duration += innerElement.duration;
       }
     })
     return duration;
+  }
+
+  formatDuration(duration: number) {
+    let result = '';
+    if (typeof (duration) === 'number') {
+      result = "Duration:";
+      const minutes = Math.floor(duration / 60000);
+      const seconds = Math.floor((duration % 60000) / 1000);
+      const milliseconds = duration % 1000;
+      if (minutes > 0) result += ` ${minutes}m`;
+      if (seconds > 0) result += ` ${seconds}s`;
+      result += ` ${milliseconds}ms`;
+    }
+    return result;
   }
 
   getElementStatus(element: TestElement) {
@@ -93,11 +109,11 @@ export class HomeComponent implements OnInit {
   }
 
   getElementsWithStatus(status: string) {
-      this.outputData = this.tests.map((feature) => {
-          if (feature.status === status) return feature;
-      }).filter((el) => {
-          return el != null;
-      })
+    this.outputData = this.tests.map((feature) => {
+      if (feature.status === status) return feature;
+    }).filter((el) => {
+      return el != null;
+    })
   }
 
   removeFiltering() {

@@ -33,17 +33,17 @@
 
     <div class="feature block dark-grey">
 
-      <h3 class="title clickable" type="button">
+      <h3 class="title" type="button">
         <span class="highlight">{{feature?.keyword}} 1:</span> {{feature?.name}}
-        <span class="float-right">Duration: {{feature?.duration}}</span>
+        <span class="float-right">{{formatDuration(feature?.duration)}}</span>
       </h3>
     
         <div *ngFor="let scenario of feature.innerElements">
           <div class="element inner-block light-grey">
 
-            <h3 class="title clickable" type="button">
+            <h3 class="title" type="button">
               <span class="highlight">{{scenario?.keyword}} 1: </span>{{scenario?.name}}
-              <span class="float-right">Duration: {{scenario?.duration}}</span>
+              <span class="float-right">{{formatDuration(scenario?.duration)}}</span>
             </h3>
 
             <div *ngFor="let step of scenario.innerElements">
@@ -52,7 +52,7 @@
                 <p>
                   <span class="text {{step?.status}}">
                     <span class="keyword highlight"> {{step?.keyword}} </span> {{step?.name}}
-                    <span class="float-right">Duration: {{step?.duration}}</span>
+                    <span class="float-right">{{formatDuration(step?.duration)}}</span>
                   </span>
                 </p>
               </div>
