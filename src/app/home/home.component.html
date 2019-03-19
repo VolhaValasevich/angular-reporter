@@ -12,7 +12,7 @@
       <span class="skipped block clickable" (click)="getElementsWithStatus('skipped')">
         skipped: {{skipped}}
       </span>
-      <span class="block clickable" style="background-color:white" (click)="removeFiltering()">
+      <span class="block clickable light-grey" (click)="removeFiltering()">
         All Tests
       </span>
     </div>
@@ -22,7 +22,7 @@
         <span>{{featureNum}} features, {{scenarioNum}} scenarios, {{stepNum}} steps</span>
       </div>
       <div>
-        <span>Duration: {{totalDuration}}</span>
+        <span>{{formatDuration(totalDuration)}}</span>
       </div>
     </div>
 

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from './home.service';
 import { TestElement } from './testElement';
-import { element } from 'protractor';
-import { stat } from 'fs';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -89,14 +88,8 @@ export class HomeComponent implements OnInit {
 
         scenario.duration = this.getElementDuration(scenario);
         scenario.status = this.getElementStatus(scenario);
-
-        scenario.innerElements.forEach((step) => {
-          if (step.keyword !== 'After') {
-            this[step.status]++;
-            this.stepNum++;
-          }
-        })
-
+        this[scenario.status]++;
+        scenario.innerElements.forEach(() => this.stepNum++)
       })
 
       feature.duration = this.getElementDuration(feature);
@@ -104,13 +97,17 @@ export class HomeComponent implements OnInit {
       this.scenarioNum += feature.innerElements.length;
       this.totalDuration += feature.duration;
       this.featureNum++;
-
     })
   }
 
   getElementsWithStatus(status: string) {
     this.outputData = this.tests.map((feature) => {
-      if (feature.status === status) return feature;
+      if (feature.status === status) {
+        feature.innerElements = feature.innerElements.filter((el) => {
+          return el.status === status;
+        })
+        return feature;
+      }
     }).filter((el) => {
       return el != null;
     })
